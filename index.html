@@ -636,6 +636,7 @@ function buildBaoStrip(){
     let maxBao=12;
     for(let b=S.curBac+1;b<=maxBao;b++){
       let comboCount=C(b,S.curBac);
+      if(b>S.curBac)comboCount*=6;
       let cost=comboCount*g.price;
       let el=document.createElement('button');el.className='bao-btn'+(S.curBao===b?' active':'');
       el.dataset.b=b;
@@ -819,7 +820,14 @@ function getComboCount(){
   if(S.curGame==='keno'){
     if(S.curBao===0)return S.curPick.length===S.curBac?1:0;
     if(S.curPick.length<S.curBao)return 0;
-    return C(S.curPick.length,S.curBac);
+    let pk=S.curPick.length;
+    let base=C(pk,S.curBac);
+    if(pk>S.curBac){
+      let diff=pk-S.curBac;
+      base=base*C(diff+2,2);
+    }
+    // diff+2 choose 2 accounts for multi-level play advantage
+    return Math.round(base);
   }
   if(S.curBao===0)return S.curPick.length===g.pick?1:0;
   if(S.curBao===5&&(S.curGame==='mega'||S.curGame==='power')){
@@ -906,6 +914,13 @@ function buyTicket(){
       combos=[S.curPick.slice(0,bac)];
     } else {
       combos=GenCombos(S.curPick,bac);
+      // For bao, each combo is checked at multiple bậc levels simultaneously
+      // The effective combo count = C(bao,bac) * C(bao-bac+2,2) for pricing
+      let effective=C(S.curPick.length,bac);
+      if(S.curPick.length>bac){
+        effective*=C(14-bac,2);
+      }
+      cnt=Math.round(effective);
     }
   } else if(S.curGame==='lotto'&&g.hasSpecial==='lotto'){
     if(S.curBao===-4){ // Bao 4: 4 main + 1 special
@@ -1043,7 +1058,8 @@ function performDraw(drawId,game){
         let k=picks.length;
         let pt=GAMES.keno.prizes;
         let prize=pt[k]&&pt[k][match]?pt[k][match]:0;
-        if(prize>bestPrize){bestPrize=prize;bestMatch=match}
+        bestPrize+=prize;
+        if(prize>0)bestMatch=Math.max(bestMatch,match);
         t.results.push({combo,match,prize});
       });
     } else if(game==='lotto'){
@@ -1078,7 +1094,8 @@ function performDraw(drawId,game){
             prize=p.a||0;break;
           }
         }
-        if(prize>bestPrize){bestPrize=prize;bestMatch=match}
+        bestPrize+=prize;
+        if(prize>0)bestMatch=Math.max(bestMatch,match);
         t.results.push({combo,match,special:mSpecial,prize});
       });
     } else {
@@ -1099,7 +1116,8 @@ function performDraw(drawId,game){
             break;
           }
         }
-        if(prize>bestPrize){bestPrize=prize;bestMatch=match}
+        bestPrize+=prize;
+        if(prize>0)bestMatch=Math.max(bestMatch,match);
         t.results.push({combo,match,special:mSpecial,prize});
       });
     }
@@ -1109,6 +1127,28 @@ function performDraw(drawId,game){
     t.drawNums=[...nums];t.special=special;
     if(bestPrize>0){S.bal+=bestPrize;totalPrize+=bestPrize}
   });
+
+  // Keno Bậc 10: 10 tỷ cap cho giải 10/10 (nếu >5 vé trúng)
+  if(game==='keno'){
+    let match10Count=0;
+    pending.forEach(t=>{
+      t.results.forEach(r=>{if(r.match===10&&r.prize===2000000000)match10Count++});
+    });
+    if(match10Count>5){
+      let cappedEach=Math.floor(10000000000/match10Count);
+      let totalCapped=match10Count*cappedEach;
+      pending.forEach(t=>{
+        let newPrize=0;
+        t.results.forEach(r=>{
+          if(r.match===10&&r.prize===2000000000){r.prize=cappedEach}
+          newPrize+=r.prize;
+        });
+        let diff=newPrize-t.prize;
+        t.prize=newPrize;
+        if(diff!==0){S.bal+=diff;totalPrize+=diff}
+      });
+    }
+  }
 
   // Reset jackpot if won
   if(game!=='keno'){
