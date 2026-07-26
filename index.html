@@ -138,6 +138,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg1);color:var(--
 .draw-timer{font-size:72px;font-weight:900;color:var(--gold);text-shadow:0 0 40px rgba(255,215,0,.3);animation:timerPulse 1s ease-in-out infinite}
 @keyframes timerPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
 .draw-timer.urgent{color:var(--red);text-shadow:0 0 40px rgba(255,53,85,.3);animation:timerPulse .5s ease-in-out infinite}
+#drawProgress.urgent{color:var(--red);animation:timerPulse .5s ease-in-out infinite}
 .draw-sub{font-size:13px;color:var(--text2)}
 .draw-sub .count{color:var(--gold);font-weight:700}
 
@@ -197,6 +198,34 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg1);color:var(--
 .keno-pt th{color:var(--gold);font-size:10px;font-weight:700}
 .keno-pt .k-row td:first-child{color:var(--gold);font-weight:700}
 
+/* Max 3D / Max 3D+ / Max 3D Pro — digit picker */
+#digitPicker{margin-top:2px}
+.digit-slots{display:flex;gap:10px;justify-content:center;margin:6px 0 10px;flex-wrap:wrap}
+.digit-slot{background:var(--card);border:2px solid rgba(255,255,255,.08);border-radius:14px;padding:8px 10px;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:104px}
+.digit-slot.active{border-color:var(--gold);box-shadow:0 0 16px rgba(255,215,0,.25)}
+.digit-slot-label{font-size:10px;color:var(--text2);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.digit-slot-cells{display:flex;gap:5px}
+.digit-cell{width:28px;height:36px;border-radius:8px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;color:var(--text2);border:1px solid rgba(255,255,255,.06)}
+.digit-cell.filled{color:#0a0a1a;background:linear-gradient(135deg,var(--gold),var(--orange));border-color:var(--gold)}
+.digit-slot-tag{font-size:9px;color:var(--neon);font-weight:700;background:rgba(0,255,136,.12);padding:1px 6px;border-radius:8px;margin-top:1px;white-space:nowrap}
+.digit-keypad{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:6px 0 4px}
+.digit-key{aspect-ratio:1;border-radius:12px;background:var(--card2);border:1px solid rgba(255,255,255,.08);color:var(--text);font-size:18px;font-weight:800;font-family:inherit;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;min-height:48px}
+.digit-key:active{transform:scale(.9);background:linear-gradient(135deg,var(--gold),var(--orange));color:#0a0a1a}
+.bao-num-wrap{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0;max-height:112px;overflow-y:auto}
+.bao-num-chip{display:flex;align-items:center;gap:6px;background:var(--card2);border:1px solid rgba(255,215,0,.2);border-radius:20px;padding:5px 6px 5px 12px;font-size:13px;font-weight:700;color:var(--gold)}
+.bao-num-chip .chip-x{width:18px;height:18px;border-radius:50%;background:rgba(255,53,85,.15);color:var(--red);display:flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer;font-weight:900;flex-shrink:0}
+.bao-num-empty{font-size:12px;color:var(--text2);padding:8px;text-align:center;width:100%}
+.draw-group-block{margin:4px 0}
+.draw-group-title{font-size:11px;font-weight:700;color:var(--text2);margin:6px 0 4px;text-transform:uppercase;letter-spacing:.5px}
+.draw-group-title b{color:var(--gold)}
+.db3-row{display:flex;flex-wrap:wrap;gap:6px}
+.db3{padding:6px 10px;border-radius:10px;background:linear-gradient(135deg,var(--gold),var(--orange));color:#0a0a1a;font-size:13px;font-weight:800;box-shadow:0 2px 8px rgba(255,215,0,.25);animation:ballDrop .35s cubic-bezier(.4,0,.2,1) both}
+.db3.hit{background:linear-gradient(135deg,var(--neon),#00CC66);box-shadow:0 0 14px rgba(0,255,136,.5);transform:scale(1.06)}
+.tier-row{display:flex;justify-content:space-between;align-items:center;background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.25);border-radius:10px;padding:8px 12px;margin:4px 0;font-size:12px}
+.tier-row .tr-name{color:var(--neon);font-weight:600}
+.tier-row .tr-amt{font-weight:800;color:var(--neon)}
+.digit-schedule{font-size:10px;color:var(--text2);text-align:center;margin-top:4px}
+
 /* Confetti */
 
 /* History ticket detail */
@@ -207,6 +236,14 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg1);color:var(--
 .td-header{flex-shrink:0;padding:16px 16px 12px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;justify-content:space-between;align-items:center}
 .td-header .td-title{font-size:16px;font-weight:800}
 .td-header .td-close{width:32px;height:32px;border-radius:50%;background:var(--card2);border:none;color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+
+/* Custom confirm modal — replaces native confirm(), which sandboxed iframe/webview
+   previews commonly block silently (button appears "unresponsive" with no error). */
+#confirmOverlay{z-index:200}
+.confirm-modal{background:var(--card);border-radius:16px;padding:22px 18px;margin:auto;max-width:320px;width:86%;box-shadow:0 20px 60px rgba(0,0,0,.5);border:1px solid rgba(255,215,0,.15)}
+.confirm-msg{font-size:15px;font-weight:600;text-align:center;margin-bottom:18px;line-height:1.5;color:var(--text)}
+.confirm-btns{display:flex;gap:10px}
+.confirm-btns .btn{flex:1}
 .td-game{font-size:12px;color:var(--text2);margin-top:2px}
 .td-body{flex:1;overflow-y:auto;padding:12px 16px 16px;-webkit-overflow-scrolling:touch}
 .td-draw-title{font-size:13px;font-weight:700;color:var(--text2);margin:8px 0 6px}
@@ -327,7 +364,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg1);color:var(--
     <div id="bonusStrip" class="bonus-strip" onclick="claimDaily()">
       <div class="b-icon">🎁</div>
       <div>
-        <div class="b-text" id="bonusText">Điểm danh nhận 200,000 xu!</div>
+        <div class="b-text" id="bonusText">Điểm danh nhận 400,000 xu!</div>
         <div class="b-sub" id="bonusSub">Mỗi ngày một lần</div>
       </div>
       <div class="b-claim" id="bonusBtn">NHẬN</div>
@@ -357,6 +394,28 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg1);color:var(--
         <div class="gc-glow"></div><div class="gc-icon">🎲</div>
         <div class="gc-name">Keno</div>
         <div class="gc-sub">1-10 số · 1-80</div>
+        <div class="gc-jp">🎯 Trúng tới 2 tỷ</div>
+      </div>
+    </div>
+
+    <div class="sec-title">3️⃣ Sản Phẩm Max 3D</div>
+    <div class="game-grid">
+      <div class="game-card" onclick="openGame('max3d')">
+        <div class="gc-glow"></div><div class="gc-icon">🔟</div>
+        <div class="gc-name">Max 3D</div>
+        <div class="gc-sub">1 bộ 3 số · 000-999</div>
+        <div class="gc-jp">🎯 Trúng tới 1.000.000</div>
+      </div>
+      <div class="game-card" onclick="openGame('max3dplus')">
+        <div class="gc-glow"></div><div class="gc-icon">➕</div>
+        <div class="gc-name">Max 3D+</div>
+        <div class="gc-sub">2 bộ 3 số · 7 hạng giải</div>
+        <div class="gc-jp">🎯 Trúng tới 1 tỷ</div>
+      </div>
+      <div class="game-card highlight" onclick="openGame('max3dpro')">
+        <div class="gc-glow"></div><div class="gc-icon">👑</div>
+        <div class="gc-name">Max 3D Pro</div>
+        <div class="gc-sub">2 bộ 3 số · 8 hạng giải</div>
         <div class="gc-jp">🎯 Trúng tới 2 tỷ</div>
       </div>
     </div>
@@ -399,6 +458,14 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg1);color:var(--
       </div>
       <div id="numGridContainer" class="num-grid" style="margin-top:4px"></div>
 
+      <div id="digitPicker" style="display:none">
+        <div id="digitSlots" class="digit-slots"></div>
+        <div id="digitKeypad" class="digit-keypad"></div>
+        <button class="btn btn-secondary btn-sm" style="width:100%;margin:2px 0 6px" onclick="backspaceDigit()">⌫ Xóa chữ số cuối</button>
+        <div id="digitBaoWrap" class="bao-num-wrap" style="display:none"></div>
+        <div id="digitSchedule" class="digit-schedule"></div>
+      </div>
+
       <div id="cartBanner" class="cart-banner" style="display:none">
         <span class="cart-label">🧾 Giỏ vé: <span class="cart-val" id="cartCount">0</span> vé</span>
         <span>Tổng: <span class="cart-val" id="cartTotal">0</span></span>
@@ -414,12 +481,14 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg1);color:var(--
 
   <!-- DRAW SCREEN -->
   <div id="screenDraw" class="screen">
-    <div class="draw-area">
+    <div class="draw-area" id="drawArea" onclick="skipDrawReveal()">
       <div class="draw-game-name" id="drawGameName">Mega 6/45</div>
-      <div class="draw-title">🔄 ĐANG QUAY SỐ</div>
-      <div class="draw-timer" id="drawTimer">10</div>
-      <div class="draw-sub">Tự động quay sau <span class="count" id="drawCountdown">10</span> giây</div>
+      <div class="draw-title" id="drawTitle">🔄 ĐANG QUAY SỐ</div>
+      <div class="draw-balls" id="drawRevealBalls"></div>
+      <div class="draw-sub" id="drawGroupLabel" style="display:none;color:var(--gold);font-weight:700"></div>
+      <div class="draw-sub">Đã quay <span class="count" id="drawProgress">0</span></div>
       <div class="draw-sub" id="drawTicketCount" style="margin-top:4px">1 vé đang chờ</div>
+      <div class="draw-sub" style="opacity:.5;margin-top:10px">👆 Chạm màn hình để bỏ qua</div>
     </div>
   </div>
 
@@ -470,6 +539,17 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg1);color:var(--
       </div>
     </div>
   </div>
+
+  <!-- CUSTOM CONFIRM MODAL (replaces native confirm()) -->
+  <div id="confirmOverlay" class="ticket-detail-overlay">
+    <div class="confirm-modal">
+      <div class="confirm-msg" id="confirmMsg">Bạn có chắc chắn?</div>
+      <div class="confirm-btns">
+        <button class="btn btn-secondary" onclick="closeConfirm(false)">Hủy</button>
+        <button class="btn btn-primary" onclick="closeConfirm(true)">Xác nhận</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -511,7 +591,48 @@ const GAMES={
       5:{5:4400000,4:150000,3:10000},6:{6:12500000,5:450000,4:40000,3:10000},
       7:{7:40000000,6:1200000,5:100000,4:40000,3:10000},8:{8:200000000,7:5000000,6:500000,5:50000,4:10000,0:10000},
       9:{9:800000000,8:12000000,7:1500000,6:150000,5:30000,4:10000,0:10000},
-      10:{10:2000000000,9:150000000,8:7400000,7:600000,6:80000,5:20000,0:10000}}}
+      10:{10:2000000000,9:150000000,8:7400000,7:600000,6:80000,5:20000,0:10000}}},
+
+  // ===== Max 3D family — kind:'digit3' branches off the ball-grid pipeline entirely =====
+  // Values verified against Vietlott's published thể lệ/prize tables (xsmn.mobi cơ cấu giải
+  // Max 3D & Max 3D Pro; vietlott.mobi hướng dẫn chơi; atrungroi.vn hướng dẫn Max 3D Pro).
+  max3d:{id:'max3d',name:'Max 3D',kind:'digit3',numsNeeded:1,price:10000,
+    groups:[{key:'nhat',count:2,label:'Giải Nhất'},{key:'nhi',count:4,label:'Giải Nhì'},
+      {key:'ba',count:6,label:'Giải Ba'},{key:'kk',count:8,label:'Giải Khuyến Khích'}],
+    straight:{nhat:1000000,nhi:350000,ba:210000,kk:100000},   // Bộ số - đúng thứ tự
+    combo6:{nhat:170000,nhi:60000,ba:35000,kk:15000},         // Tổ hợp 6 - 3 chữ số khác nhau
+    combo3:{nhat:340000,nhi:120000,ba:70000,kk:30000},        // Tổ hợp 3 - 2 chữ số giống nhau
+    schedule:'Quay số: Thứ 2 - 4 - 6 · 18h00',maxPrizeLabel:'1.000.000'},
+
+  max3dplus:{id:'max3dplus',name:'Max 3D+',kind:'digit3',numsNeeded:2,price:10000,
+    groups:[{key:'nhat',count:2,label:'Giải Nhất'},{key:'nhi',count:4,label:'Giải Nhì'},
+      {key:'ba',count:6,label:'Giải Ba'},{key:'kk',count:8,label:'Giải Khuyến Khích'}],
+    tiers:[
+      {key:'nhat',n:'Giải Nhất',a:1000000000,rule:'exact-order-first',pairKey:'nhat',cap:30000000000},
+      {key:'nhi', n:'Giải Nhì', a:40000000, rule:'both-in:nhi'},
+      {key:'ba',  n:'Giải Ba',  a:10000000, rule:'both-in:ba'},
+      {key:'tu',  n:'Giải Tư',  a:5000000,  rule:'both-in:all'},
+      {key:'nam', n:'Giải Năm', a:1000000,  rule:'any-in:nhat'},
+      {key:'sau', n:'Giải Sáu', a:150000,   rule:'any-in:nhi,ba'},
+      {key:'bay', n:'Giải Bảy', a:40000,    rule:'any-in:kk'}
+    ],
+    schedule:'Quay số: Thứ 2 - 4 - 6 · 18h00 (dùng chung kết quả với Max 3D)',maxPrizeLabel:'1.000.000.000'},
+
+  max3dpro:{id:'max3dpro',name:'Max 3D Pro',kind:'digit3',numsNeeded:2,price:10000,
+    allowBao:true,baoMin:3,baoMax:20,
+    groups:[{key:'db',count:2,label:'Giải Đặc Biệt'},{key:'nhat',count:4,label:'Giải Nhất'},
+      {key:'nhi',count:6,label:'Giải Nhì'},{key:'ba',count:8,label:'Giải Ba'}],
+    tiers:[
+      {key:'db',   n:'Giải Đặc Biệt',     a:2000000000,rule:'exact-order-first',  pairKey:'db',cap:30000000000},
+      {key:'dbphu',n:'Giải Phụ Đặc Biệt', a:400000000, rule:'exact-order-reverse',pairKey:'db'},
+      {key:'nhat', n:'Giải Nhất',         a:30000000,  rule:'both-in:nhat'},
+      {key:'nhi',  n:'Giải Nhì',          a:10000000,  rule:'both-in:nhi'},
+      {key:'ba',   n:'Giải Ba',           a:4000000,   rule:'both-in:ba'},
+      {key:'tu',   n:'Giải Tư',           a:1000000,   rule:'both-in:all'},
+      {key:'nam',  n:'Giải Năm',          a:100000,    rule:'any-in:db'},
+      {key:'sau',  n:'Giải Sáu',          a:40000,     rule:'any-in:nhat,nhi,ba'}
+    ],
+    schedule:'Quay số: Thứ 3 - 5 - 7 · 18h00',maxPrizeLabel:'2.000.000.000'}
 };
 
 function C(n,k){if(k>n)return 0;if(k===0||k===n)return 1;let r=1;for(let i=1;i<=k;i++)r=r*(n-i+1)/i;return r}
@@ -520,15 +641,58 @@ function vibrate(pattern){try{if(navigator.vibrate)navigator.vibrate(pattern)}ca
 function fmt(n){return Number(n).toLocaleString('vi-VN')}
 function $(id){return document.getElementById(id)}
 
+// ===================== MAX 3D FAMILY — pure logic (unit-verified) =====================
+function isDigitGame(id){return id==='max3d'||id==='max3dplus'||id==='max3dpro'}
+function rand3(){return String(Math.floor(Math.random()*1000)).padStart(3,'0')}
+function drawDigitGroups(groupDefs){let out={};groupDefs.forEach(g=>{out[g.key]=Array.from({length:g.count},()=>rand3())});return out}
+function comboTypeOf(numStr){let uniq=new Set(numStr.split('')).size;if(uniq===3)return'combo6';if(uniq===2)return'combo3';return null}
+function permutationsOf(numStr){
+  let d=numStr.split(''),perms=new Set();
+  (function permute(arr,m){
+    if(arr.length===0){perms.add(m.join(''));return}
+    for(let i=0;i<arr.length;i++){let cur=arr.slice();let next=cur.splice(i,1);permute(cur,m.concat(next))}
+  })(d,[]);
+  return Array.from(perms);
+}
+// Max 3D (single 3-digit pick): straight "Bộ số" (exact order) or "Tổ hợp" (order-free box)
+function evalSingleMax3D(pick,groups,mode){
+  let g=GAMES.max3d,total=0,hits=[];
+  let boxType=comboTypeOf(pick);
+  let useCombo=mode==='combo'&&boxType; // AAA has no box variant -> falls back to straight table
+  let table=useCombo?g[boxType]:g.straight;
+  let checkFn=useCombo?(num)=>permutationsOf(pick).includes(num):(num)=>pick===num;
+  g.groups.forEach(gr=>{if(groups[gr.key].some(checkFn)){total+=table[gr.key];hits.push({key:gr.key,n:gr.label,a:table[gr.key]})}});
+  return{total,hits};
+}
+// Generic pair-tier evaluator for Max3D+/Max3D Pro. Tiers are checked independently and
+// summed (Vietlott's documented "cộng dồn": e.g. a Nhì match ALSO satisfies Giải Tư's
+// broader "any 2 of 20" condition, and both are paid — see official worked example).
+function evalPairTiers(tiers,groups,p1,p2){
+  let allNums=Object.values(groups).flat();
+  let total=0,hits=[];
+  tiers.forEach(t=>{
+    let hit=false;
+    if(t.rule==='exact-order-first')hit=(p1===groups[t.pairKey][0]&&p2===groups[t.pairKey][1]);
+    else if(t.rule==='exact-order-reverse')hit=(p1===groups[t.pairKey][1]&&p2===groups[t.pairKey][0]);
+    else if(t.rule.indexOf('both-in:')===0){let gk=t.rule.slice(8);let pool=gk==='all'?allNums:groups[gk];hit=pool.includes(p1)&&pool.includes(p2)}
+    else if(t.rule.indexOf('any-in:')===0){let gks=t.rule.slice(7).split(',');let pool=[];gks.forEach(k=>pool=pool.concat(groups[k]));hit=pool.includes(p1)||pool.includes(p2)}
+    if(hit){total+=t.a;hits.push({key:t.key,n:t.n,a:t.a})}
+  });
+  return{total,hits};
+}
+// Max 3D Pro "Bao" (cover N numbers) -> system builds every ORDERED pair: N×(N-1) tickets
+function genOrderedPairs(nums){let out=[];for(let i=0;i<nums.length;i++)for(let j=0;j<nums.length;j++)if(i!==j)out.push([nums[i],nums[j]]);return out}
+
 // ===================== STATE =====================
 let S={
   bal:1000000,
   tickets:[],
   lastBonus:'',
   curGame:'mega',curBao:0,curBac:1,curPick:[],curSpecial:0,curSpecialPick:[],
+  curSlots:[''],curActiveSlot:0,curDigitMode:'straight',curBaoNums:[],
   jackpots:{mega:12000000000,power:30000000000,power2:3000000000,lotto:6000000000},
   cartDrawId:null,cartCount:0,cartTotal:0,
-  drawTimer:null,activeDraw:null,
+  drawTimer:null,activeDraw:null,curReveal:null,
   histFilter:'all'
 };
 
@@ -576,10 +740,209 @@ function buildGame(){
   let g=GAMES[S.curGame];
   S.cartDrawId=null;S.cartCount=0;S.cartTotal=0;
   $('gameTitle').textContent='🎯 '+g.name;
+  if(isDigitGame(S.curGame)){
+    $('numGridContainer').style.display='none';
+    $('specialPicker').style.display='none';
+    $('selDisplay').style.display='none';
+    $('digitPicker').style.display='';
+    buildDigitGame();
+    updateCartUI();
+    return;
+  }
+  $('digitPicker').style.display='none';
+  $('numGridContainer').style.display='';
+  $('selDisplay').style.display='';
   updateGameUI();updateCartUI();
   buildGrid();
   buildBaoStrip();
   buildSpecialGrid();
+}
+
+// ===================== MAX 3D FAMILY — UI (digit picker) =====================
+function buildDigitGame(){
+  let g=GAMES[S.curGame];
+  S.curSlots=g.numsNeeded===2?['',''] :[''];
+  S.curActiveSlot=0;
+  S.curDigitMode=g.allowBao?'pair':'straight';
+  S.curBaoNums=[];
+  buildDigitModeStrip();
+  buildDigitSlots();
+  buildDigitKeypad();
+  $('digitSchedule').textContent=g.schedule;
+  updateDigitUI();
+}
+
+function buildDigitModeStrip(){
+  let g=GAMES[S.curGame];
+  let c=$('baoStrip');c.innerHTML='';
+  if(S.curGame==='max3d'){
+    let b1=document.createElement('button');b1.className='bao-btn'+(S.curDigitMode==='straight'?' active':'');
+    b1.innerHTML='Bộ số<span class="b-price">đúng thứ tự</span>';b1.onclick=()=>setDigitMode('straight');c.appendChild(b1);
+    let b2=document.createElement('button');b2.className='bao-btn'+(S.curDigitMode==='combo'?' active':'');
+    b2.innerHTML='Tổ hợp<span class="b-price">không cần đúng thứ tự</span>';b2.onclick=()=>setDigitMode('combo');c.appendChild(b2);
+  } else if(g.allowBao){
+    let b1=document.createElement('button');b1.className='bao-btn'+(S.curDigitMode==='pair'?' active':'');
+    b1.innerHTML='Cặp số<span class="b-price">chọn 2 số</span>';b1.onclick=()=>setDigitMode('pair');c.appendChild(b1);
+    let b2=document.createElement('button');b2.className='bao-btn'+(S.curDigitMode==='bao'?' active':'');
+    b2.innerHTML='Bao (3-20 số)<span class="b-price">tự ghép cặp</span>';b2.onclick=()=>setDigitMode('bao');c.appendChild(b2);
+  } else {
+    c.innerHTML='';
+  }
+}
+
+function setDigitMode(mode){
+  S.curDigitMode=mode;
+  S.curSlots=GAMES[S.curGame].numsNeeded===2?['','']:[''];
+  S.curActiveSlot=0;
+  S.curBaoNums=[];
+  buildDigitModeStrip();
+  buildDigitSlots();
+  updateDigitUI();
+}
+
+function buildDigitSlots(){
+  let g=GAMES[S.curGame];
+  let wrap=$('digitSlots'),baoWrap=$('digitBaoWrap');
+  if(S.curDigitMode==='bao'){
+    wrap.style.display='none';baoWrap.style.display='';
+    renderBaoNumList();
+    return;
+  }
+  wrap.style.display='';baoWrap.style.display='none';
+  wrap.innerHTML='';
+  let n=g.numsNeeded;
+  for(let i=0;i<n;i++){
+    let slot=document.createElement('div');
+    slot.className='digit-slot'+(S.curActiveSlot===i?' active':'');
+    slot.onclick=(function(idx){return function(){S.curActiveSlot=idx;buildDigitSlots()}})(i);
+    let label=document.createElement('div');label.className='digit-slot-label';
+    label.textContent=n===2?(i===0?'Số đầu':'Số sau'):'Số của bạn';
+    slot.appendChild(label);
+    let cells=document.createElement('div');cells.className='digit-slot-cells';
+    let val=S.curSlots[i]||'';
+    for(let c=0;c<3;c++){
+      let cell=document.createElement('div');cell.className='digit-cell'+(c<val.length?' filled':'');
+      cell.textContent=c<val.length?val[c]:'_';
+      cells.appendChild(cell);
+    }
+    slot.appendChild(cells);
+    if(val.length===3&&S.curGame==='max3d'&&S.curDigitMode==='combo'){
+      let t=comboTypeOf(val);
+      let tag=document.createElement('div');tag.className='digit-slot-tag';
+      tag.textContent=t==='combo6'?'Tổ hợp 6':t==='combo3'?'Tổ hợp 3':'3 số giống nhau · tính như Bộ số';
+      slot.appendChild(tag);
+    }
+    wrap.appendChild(slot);
+  }
+}
+
+function buildDigitKeypad(){
+  let kp=$('digitKeypad');kp.innerHTML='';
+  for(let d=0;d<=9;d++){
+    let b=document.createElement('button');b.className='digit-key';b.textContent=d;
+    b.onclick=(function(dig){return function(){pickDigit(dig)}})(d);
+    kp.appendChild(b);
+  }
+}
+
+function pickDigit(d){
+  let g=GAMES[S.curGame];
+  if(S.curDigitMode==='bao'){
+    let val=(S.curSlots[0]||'')+d;
+    if(val.length>3)val=val.slice(0,3);
+    S.curSlots[0]=val;
+    if(val.length===3){
+      if(S.curBaoNums.length>=g.baoMax){toast('Tối đa '+g.baoMax+' số cho vé Bao!','error');S.curSlots[0]='';}
+      else if(S.curBaoNums.includes(val)){toast('Số '+val+' đã có trong danh sách!','error');S.curSlots[0]='';}
+      else{S.curBaoNums.push(val);S.curSlots[0]='';vibrate(15);}
+    } else vibrate(10);
+    buildDigitSlots();updateDigitUI();
+    return;
+  }
+  let val=S.curSlots[S.curActiveSlot]||'';
+  if(val.length>=3){vibrate([10,30,10]);return}
+  val+=d;
+  S.curSlots[S.curActiveSlot]=val;
+  vibrate(10);
+  if(val.length===3&&S.curActiveSlot<S.curSlots.length-1)S.curActiveSlot++;
+  buildDigitSlots();updateDigitUI();
+}
+
+function backspaceDigit(){
+  if(S.curDigitMode==='bao'){
+    if(S.curSlots[0]&&S.curSlots[0].length>0)S.curSlots[0]=S.curSlots[0].slice(0,-1);
+    else if(S.curBaoNums.length>0)S.curBaoNums.pop();
+    buildDigitSlots();updateDigitUI();
+    return;
+  }
+  let val=S.curSlots[S.curActiveSlot]||'';
+  if(val.length===0&&S.curActiveSlot>0){S.curActiveSlot--;val=S.curSlots[S.curActiveSlot]||''}
+  if(val.length>0)S.curSlots[S.curActiveSlot]=val.slice(0,-1);
+  vibrate(8);
+  buildDigitSlots();updateDigitUI();
+}
+
+function removeBaoNum(idx){S.curBaoNums.splice(idx,1);renderBaoNumList();updateDigitUI();vibrate(8)}
+
+function renderBaoNumList(){
+  let g=GAMES[S.curGame];
+  let el=$('digitBaoWrap');
+  if(S.curBaoNums.length===0){el.innerHTML='<div class="bao-num-empty">Chưa có số nào. Bấm bàn phím phía trên để thêm số (tối thiểu '+g.baoMin+' số, tối đa '+g.baoMax+' số).</div>';return}
+  el.innerHTML=S.curBaoNums.map((n,i)=>'<div class="bao-num-chip">'+n+'<span class="chip-x" onclick="removeBaoNum('+i+')">✕</span></div>').join('');
+}
+
+function randomPickDigit(){
+  let g=GAMES[S.curGame];
+  if(S.curDigitMode==='bao'){
+    S.curBaoNums=[];
+    let need=Math.max(g.baoMin,6);
+    while(S.curBaoNums.length<need){let n=rand3();if(!S.curBaoNums.includes(n))S.curBaoNums.push(n)}
+    S.curSlots[0]='';
+    renderBaoNumList();updateDigitUI();vibrate(15);
+    return;
+  }
+  S.curSlots=S.curSlots.map(()=>rand3());
+  S.curActiveSlot=0;
+  buildDigitSlots();updateDigitUI();vibrate(15);
+}
+
+function clearPickDigit(){
+  let g=GAMES[S.curGame];
+  S.curSlots=g.numsNeeded===2?['','']:[''];
+  S.curActiveSlot=0;
+  S.curBaoNums=[];
+  buildDigitSlots();updateDigitUI();
+}
+
+function getDigitComboCount(){
+  let g=GAMES[S.curGame];
+  if(S.curDigitMode==='bao'){
+    let k=S.curBaoNums.length;
+    return k<g.baoMin?0:k*(k-1);
+  }
+  return S.curSlots.every(s=>s.length===3)?1:0;
+}
+
+function updateDigitUI(){
+  let g=GAMES[S.curGame];
+  let n=getDigitComboCount();
+  let cost=n*g.price;
+  if(S.curDigitMode==='bao'){
+    $('selCount').textContent=S.curBaoNums.length+'/'+g.baoMax;
+    $('baoLabel').textContent='Bao';
+  } else {
+    let filled=S.curSlots.filter(s=>s.length===3).length;
+    $('selCount').textContent=filled+'/'+S.curSlots.length;
+    $('baoLabel').textContent=S.curGame==='max3d'?(S.curDigitMode==='combo'?'Tổ hợp':'Bộ số'):'Cặp số';
+  }
+  $('costDisplay').textContent=fmt(cost);
+  let hint=$('comboHint');
+  if(S.curDigitMode==='bao'&&S.curBaoNums.length>=2){
+    hint.style.display='';
+    hint.innerHTML='Công thức Bao: <b>'+S.curBaoNums.length+'×('+S.curBaoNums.length+'-1)</b> = <b>'+n+' cặp số</b> × '+fmt(g.price)+' xu = <b>'+fmt(cost)+' xu</b>';
+  } else { hint.style.display='none'; }
+  $('buyBtn').disabled=!(n>0&&S.bal>=cost);
+  updateCartUI();
 }
 
 function buildGrid(){
@@ -874,6 +1237,7 @@ function updateBalls(){
 }
 
 function randomPick(){
+  if(isDigitGame(S.curGame)){randomPickDigit();return}
   let g=GAMES[S.curGame];
   let max=getMaxPick();
   let pool=[];for(let i=1;i<=g.range;i++)pool.push(i);
@@ -887,10 +1251,14 @@ function randomPick(){
   updateBalls();
 }
 
-function clearPick(){S.curPick=[];S.curSpecial=0;S.curSpecialPick=[];updateGameUI();updateBalls();updateSpecialBalls()}
+function clearPick(){
+  if(isDigitGame(S.curGame)){clearPickDigit();return}
+  S.curPick=[];S.curSpecial=0;S.curSpecialPick=[];updateGameUI();updateBalls();updateSpecialBalls()
+}
 
 // ===================== BUY =====================
 function buyTicket(){
+  if(isDigitGame(S.curGame)){buyDigitTicket();return}
   let g=GAMES[S.curGame];
   let cnt=getComboCount();
   let cost=cnt*g.price;
@@ -965,6 +1333,52 @@ function buyTicket(){
   toast('✅ Mua '+cnt+' bộ · '+fmt(cost)+' xu · Tổng '+S.cartCount+' vé','success');
 }
 
+function buyDigitTicket(){
+  let g=GAMES[S.curGame];
+  let cnt=getDigitComboCount();
+  let cost=cnt*g.price;
+  if(cnt===0){toast(S.curDigitMode==='bao'?'Chọn ít nhất '+g.baoMin+' số cho vé Bao!':'Nhập đủ 3 chữ số cho mỗi ô!','error');return}
+  if(S.bal<cost){toast('Không đủ xu!','error');return}
+
+  let combos=[],pickedNumbers=[];
+  if(S.curDigitMode==='bao'){
+    combos=genOrderedPairs(S.curBaoNums);
+    pickedNumbers=S.curBaoNums.slice();
+  } else if(g.numsNeeded===2){
+    combos=[[S.curSlots[0],S.curSlots[1]]];
+    pickedNumbers=[S.curSlots[0],S.curSlots[1]];
+  } else {
+    combos=[S.curSlots[0]];
+    pickedNumbers=[S.curSlots[0]];
+  }
+
+  if(combos.length!==cnt){ // same defensive invariant guard as buyTicket()
+    console.warn('⚠️ Digit combo count mismatch! expected='+cnt+' actual='+combos.length);
+    cnt=combos.length;cost=cnt*g.price;
+  }
+
+  S.bal-=cost;
+  if(!S.cartDrawId)S.cartDrawId='d_'+Date.now()+'_'+Math.random().toString(36).substr(2,4);
+
+  let ticket={
+    id:'t_'+Date.now()+'_'+Math.random().toString(36).substr(2,4),
+    game:S.curGame,gameName:g.name,numbers:pickedNumbers,
+    bao:S.curDigitMode==='bao'?S.curBaoNums.length:0,digitMode:S.curDigitMode,
+    playerSpecial:0,playerSpecials:[],
+    combos:combos,totalCombos:cnt,drawId:S.cartDrawId,
+    time:Date.now(),status:'pending',prize:0,match:0,results:[]
+  };
+  S.tickets.push(ticket);
+  S.cartCount++;S.cartTotal+=cost;
+
+  if(S.curDigitMode==='bao'){S.curBaoNums=[];S.curSlots[0]='';}
+  else{S.curSlots=g.numsNeeded===2?['','']:[''];S.curActiveSlot=0;}
+
+  buildDigitSlots();updateDigitUI();save();updateHome();
+  vibrate(15);
+  toast('✅ Mua '+cnt+' bộ · '+fmt(cost)+' xu · Tổng '+S.cartCount+' vé','success');
+}
+
 
 // ===================== CART =====================
 function updateCartUI(){
@@ -999,36 +1413,16 @@ function startCartDraw(){
 }
 
 // ===================== DRAW =====================
-function startDraw(drawId,game){
-  showScreen('screenDraw');
-  let g=GAMES[game];
-  $('drawGameName').textContent=g.name;
-  $('drawTimer').textContent='10';$('drawTimer').classList.remove('urgent');
-  $('drawCountdown').textContent='10';
-  let cnt=S.tickets.filter(t=>t.status==='pending'&&t.drawId===drawId).length;
-  $('drawTicketCount').textContent=cnt+' vé đang chờ';
-  let sec=10;
-  if(S.drawTimer)clearInterval(S.drawTimer);
-  S.drawTimer=setInterval(()=>{
-    sec--;
-    $('drawTimer').textContent=sec;
-    $('drawCountdown').textContent=sec;
-    if(sec<=3)$('drawTimer').classList.add('urgent');
-    if(sec<=0){
-      clearInterval(S.drawTimer);S.drawTimer=null;
-      performDraw(drawId,game);
-    }
-  },1000);
-}
-
-function performDraw(drawId,game){
+// Numbers are generated ONCE up front (in true random draw order) and that exact
+// order drives both the live reveal animation AND the final prize calculation —
+// so what you watch pop up is exactly what gets checked against your ticket.
+function genBallDraw(game){
   let g=GAMES[game];
   let pool=[];for(let i=1;i<=g.range;i++)pool.push(i);
   for(let i=pool.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]]}
-  let nums=pool.slice(0,g.drawCount).sort((a,b)=>a-b);
+  let nums=pool.slice(0,g.drawCount); // NOT sorted — this IS the draw order
   let special=null;
   if(g.hasSpecial==='lotto'){
-    // Lotto: draw special number from 1-12 separately
     let spPool=[];for(let i=1;i<=g.specialRange;i++)spPool.push(i);
     for(let i=spPool.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[spPool[i],spPool[j]]=[spPool[j],spPool[i]]}
     special=spPool[0];
@@ -1037,6 +1431,157 @@ function performDraw(drawId,game){
     for(let i=rem.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[rem[i],rem[j]]=[rem[j],rem[i]]}
     special=rem[0];
   }
+  return {nums,special};
+}
+
+const PREP_SECONDS=5; // the "chờ quay" delay — tune this ONE constant only; reveal pacing is separate/untouched
+
+function startDraw(drawId,game){
+  showScreen('screenDraw');
+  let g=GAMES[game];
+  $('drawGameName').textContent=g.name;
+  $('drawRevealBalls').innerHTML='';
+  $('drawGroupLabel').style.display='none';
+  let cnt=S.tickets.filter(t=>t.status==='pending'&&t.drawId===drawId).length;
+  $('drawTicketCount').textContent=cnt+' vé đang chờ';
+  if(S.drawTimer){clearTimeout(S.drawTimer);clearInterval(S.drawTimer);S.drawTimer=null}
+  $('drawProgress').classList.remove('urgent');
+  startPrepPhase(drawId,game);
+}
+
+// NEW: a distinct "Đang chuẩn bị..." wait, separate from — and before — the ball-by-ball
+// reveal. Numbers are NOT generated yet during this phase (nothing has "been drawn" until
+// prep finishes), matching how a real draw ceremony has a lead-in before balls start moving.
+function startPrepPhase(drawId,game){
+  $('drawTitle').textContent='🔄 ĐANG CHUẨN BỊ QUAY SỐ...';
+  let sec=PREP_SECONDS;
+  $('drawProgress').textContent=sec+'s';
+  S.curReveal={type:'prep',drawId,game};
+  S.drawTimer=setInterval(()=>{
+    sec--;
+    $('drawProgress').textContent=Math.max(sec,0)+'s';
+    if(sec<=2)$('drawProgress').classList.add('urgent');
+    if(sec<=0){
+      clearInterval(S.drawTimer);S.drawTimer=null;S.curReveal=null;
+      $('drawProgress').classList.remove('urgent');
+      beginReveal(drawId,game);
+    }
+  },1000);
+}
+
+// Prep is over — NOW the numbers get drawn, and the (unchanged) ball-by-ball animation starts.
+function beginReveal(drawId,game){
+  $('drawTitle').textContent='🔄 ĐANG QUAY SỐ';
+  $('drawProgress').textContent='0';
+  if(isDigitGame(game)){
+    let groups=drawDigitGroups(GAMES[game].groups);
+    animateDigitReveal(drawId,game,groups);
+  } else {
+    let draw=genBallDraw(game);
+    animateBallReveal(drawId,game,draw);
+  }
+}
+
+// Reveals mega/power/lotto/keno balls one at a time, in the exact order drawn.
+// Reveal progress lives in S.curReveal so skipDrawReveal() can fast-forward the
+// SAME draw instead of throwing it away and generating a different one.
+function animateBallReveal(drawId,game,draw){
+  let wrap=$('drawRevealBalls');
+  let totalSteps=draw.nums.length+(draw.special!=null?1:0);
+  S.curReveal={type:'ball',drawId,game,draw,idx:0,totalSteps};
+  const PER_BALL=250;
+  function step(){
+    let rv=S.curReveal;
+    if(!rv)return;
+    if(rv.idx<rv.draw.nums.length){
+      let n=rv.draw.nums[rv.idx];
+      let b=document.createElement('div');b.className='db';b.textContent=n<10?'0'+n:n;
+      wrap.appendChild(b);
+      vibrate(12);
+      rv.idx++;
+      $('drawProgress').textContent=rv.idx+'/'+rv.totalSteps;
+      S.drawTimer=setTimeout(step,PER_BALL);
+    } else if(rv.draw.special!=null&&rv.idx===rv.draw.nums.length){
+      let sp=rv.draw.special;
+      let b=document.createElement('div');b.className='db special';b.textContent='★'+(sp<10?'0'+sp:sp);
+      wrap.appendChild(b);
+      vibrate([20,30,20]);
+      rv.idx++;
+      $('drawProgress').textContent=rv.totalSteps+'/'+rv.totalSteps;
+      S.drawTimer=setTimeout(step,500);
+    } else {
+      S.drawTimer=null;S.curReveal=null;
+      performDraw(rv.drawId,rv.game,rv.draw);
+    }
+  }
+  step();
+}
+
+// Reveals Max3D/Max3D+/Max3D Pro group by group (Giải Nhất → Nhì → Ba → Khuyến Khích,
+// or Đặc Biệt → Nhất → Nhì → Ba for Pro), numbers within a group appearing one at a time —
+// mirrors how a real multi-tier draw ceremony would read out results.
+function animateDigitReveal(drawId,game,groups){
+  let g=GAMES[game];
+  let wrap=$('drawRevealBalls');
+  let label=$('drawGroupLabel');label.style.display='';
+  let flat=[];
+  g.groups.forEach((gr,gi)=>groups[gr.key].forEach(v=>flat.push({gi,label:gr.label,value:v})));
+  S.curReveal={type:'digit',drawId,game,groups,flat,idx:0,total:flat.length,lastGi:-1};
+  const PER_NUM=250;
+  function step(){
+    let rv=S.curReveal;
+    if(!rv)return;
+    if(rv.idx<rv.flat.length){
+      let item=rv.flat[rv.idx];
+      if(item.gi!==rv.lastGi){label.textContent='🎯 '+item.label;rv.lastGi=item.gi;}
+      let b=document.createElement('div');b.className='db3';b.textContent=item.value;
+      wrap.appendChild(b);
+      vibrate(item.gi===0?[20,30,20]:12);
+      rv.idx++;
+      $('drawProgress').textContent=rv.idx+'/'+rv.total;
+      S.drawTimer=setTimeout(step,PER_NUM);
+    } else {
+      S.drawTimer=null;S.curReveal=null;
+      performDigitDraw(rv.drawId,rv.game,rv.groups);
+    }
+  }
+  step();
+}
+
+// Tap-to-skip: fast-forwards the SAME draw already in progress (never regenerates a
+// different one — what you see after skipping is a completed version of what you were
+// already watching), then proceeds to results immediately. Never traps the player.
+function skipDrawReveal(){
+  let rv=S.curReveal;
+  if(!rv||!S.drawTimer)return;
+  clearTimeout(S.drawTimer);clearInterval(S.drawTimer);S.drawTimer=null;S.curReveal=null;
+  if(rv.type==='prep'){
+    $('drawProgress').classList.remove('urgent');
+    toast('⏭️ Đã bỏ qua bước chuẩn bị','info');
+    beginReveal(rv.drawId,rv.game);
+    return;
+  }
+  toast('⏭️ Đã bỏ qua hiệu ứng quay số','info');
+  let wrap=$('drawRevealBalls');wrap.innerHTML='';
+  if(rv.type==='ball'){
+    rv.draw.nums.forEach(n=>{let b=document.createElement('div');b.className='db';b.textContent=n<10?'0'+n:n;wrap.appendChild(b)});
+    if(rv.draw.special!=null){let sp=rv.draw.special;let b=document.createElement('div');b.className='db special';b.textContent='★'+(sp<10?'0'+sp:sp);wrap.appendChild(b)}
+    $('drawProgress').textContent=rv.totalSteps+'/'+rv.totalSteps;
+    performDraw(rv.drawId,rv.game,rv.draw);
+  } else {
+    let g=GAMES[rv.game];
+    g.groups.forEach(gr=>rv.groups[gr.key].forEach(v=>{let b=document.createElement('div');b.className='db3';b.textContent=v;wrap.appendChild(b)}));
+    $('drawGroupLabel').style.display='none';
+    $('drawProgress').textContent=rv.total+'/'+rv.total;
+    performDigitDraw(rv.drawId,rv.game,rv.groups);
+  }
+}
+
+function performDraw(drawId,game,preDrawn){
+  if(isDigitGame(game)){performDigitDraw(drawId,game);return}
+  let g=GAMES[game];
+  let draw=preDrawn||genBallDraw(game);
+  let nums=draw.nums,special=draw.special; // draw order preserved — NOT sorted
 
   let pending=S.tickets.filter(t=>t.status==='pending'&&t.drawId===drawId);
   let totalPrize=0;
@@ -1167,6 +1712,65 @@ function performDraw(drawId,game){
   showResults(game,nums,special,pending,totalPrize);
 }
 
+// Max 3D family draw: independent 20-number grouped draw (own simulation instance,
+// not literally shared with a real-world Vietlott draw — see chat reply for why).
+function performDigitDraw(drawId,game,preDrawnGroups){
+  let g=GAMES[game];
+  let drawGroups=preDrawnGroups||drawDigitGroups(g.groups);
+  let pending=S.tickets.filter(t=>t.status==='pending'&&t.drawId===drawId);
+  let totalPrize=0;
+
+  pending.forEach(t=>{
+    let ticketPrize=0,allHits=[];
+    t.results=[];
+    if(game==='max3d'){
+      t.combos.forEach(pick=>{
+        let r=evalSingleMax3D(pick,drawGroups,t.digitMode);
+        ticketPrize+=r.total;allHits=allHits.concat(r.hits);
+        t.results.push({combo:pick,prize:r.total,hits:r.hits,doubled:false});
+      });
+    } else {
+      t.combos.forEach(pair=>{
+        let r=evalPairTiers(g.tiers,drawGroups,pair[0],pair[1]);
+        let doubled=pair[0]===pair[1]; // official rule: identical pair -> prize value doubles
+        let prize=doubled?r.total*2:r.total;
+        ticketPrize+=prize;allHits=allHits.concat(r.hits);
+        t.results.push({combo:pair,prize:prize,hits:r.hits,doubled:doubled});
+      });
+    }
+    t.status=ticketPrize>0?'won':'lost';
+    t.prize=ticketPrize;t.match=allHits.length;t.drawGroups=drawGroups;
+    if(ticketPrize>0){S.bal+=ticketPrize;totalPrize+=ticketPrize}
+  });
+
+  // Payout cap: top tier (Giải Nhất for Max3D+ / Giải Đặc Biệt for Max3D Pro) is capped at
+  // 30 tỷ đồng/kỳ; if total claims exceed the cap, split the cap evenly among winners.
+  if(g.tiers){
+    let topTier=g.tiers[0];
+    if(topTier.cap){
+      let winners=[];
+      pending.forEach(t=>t.results.forEach(r=>{
+        if(r.hits.some(h=>h.key===topTier.key)){
+          let baseAmt=topTier.a*(r.doubled?2:1);
+          winners.push({t,r,amt:baseAmt});
+        }
+      }));
+      let totalTop=winners.reduce((s,w)=>s+w.amt,0);
+      if(totalTop>topTier.cap&&winners.length>0){
+        let per=Math.floor(topTier.cap/winners.length);
+        winners.forEach(w=>{
+          let diff=per-w.amt;
+          w.r.prize+=diff;w.t.prize+=diff;
+          S.bal+=diff;totalPrize+=diff;
+        });
+      }
+    }
+  }
+
+  S.activeDraw=null;save();
+  showDigitResults(game,drawGroups,pending,totalPrize);
+}
+
 // ===================== RESULTS =====================
 function showResults(game,nums,special,tickets,totalPrize){
   showScreen('screenResult');
@@ -1179,6 +1783,41 @@ function showResults(game,nums,special,tickets,totalPrize){
     bh+='<div class="db" style="animation-delay:'+(i*0.08)+'s">'+(n<10?'0'+n:n)+'</div>';
   });
   if(special)bh+='<div class="db special">★'+(special<10?'0'+special:special)+'</div>';
+  $('resultBalls').innerHTML=bh;
+
+  let ph='';
+  tickets.forEach(t=>{
+    let cls=t.prize>0?' won':'';
+    let st=t.prize>0?'🎉 Trúng '+fmt(t.prize)+' xu':'😢 Không trúng';
+    let baoT=t.bao>0?' (Bao '+t.bao+')':'';
+    ph+='<div class="prize-card'+cls+'"><div class="pc-info"><div>🎫 '+t.gameName+baoT+'</div><div class="pc-status">'+t.totalCombos+' bộ · '+st+'</div></div>'+
+      (t.prize>0?'<div class="pc-amount">+'+fmt(t.prize)+'</div>':'<div class="pc-amount" style="color:var(--text2)">0</div>')+'</div>';
+  });
+  if(tickets.length===0)ph='<div class="text-muted text-center" style="padding:20px">Không có vé</div>';
+  $('resultPrizes').innerHTML=ph;
+
+  if(totalPrize>0){spawnConfetti();vibrate([30,60,30,60,80])}
+}
+
+// Digit-family results: draw numbers rendered grouped by prize tier (Giải Nhất/Nhì/Ba/...)
+// as pill badges instead of flat circular balls, since each drawn value is a 3-digit number.
+function showDigitResults(game,drawGroups,tickets,totalPrize){
+  showScreen('screenResult');
+  let g=GAMES[game];
+  $('resultTitle').textContent=totalPrize>0?'🎉 CHÚC MỪNG! 🎉':'😢 KẾT QUẢ';
+  $('resultGame').textContent=g.name+' · '+new Date().toLocaleString('vi-VN');
+
+  let allPlayerNums=new Set();
+  tickets.forEach(t=>(t.numbers||[]).forEach(n=>allPlayerNums.add(n)));
+
+  let bh='';
+  g.groups.forEach(gr=>{
+    bh+='<div class="draw-group-block"><div class="draw-group-title">🎯 <b>'+gr.label+'</b> ('+gr.count+' bộ)</div><div class="db3-row">';
+    drawGroups[gr.key].forEach(n=>{
+      bh+='<div class="db3'+(allPlayerNums.has(n)?' hit':'')+'">'+n+'</div>';
+    });
+    bh+='</div></div>';
+  });
   $('resultBalls').innerHTML=bh;
 
   let ph='';
@@ -1244,7 +1883,7 @@ function updateHome(){
     $('bonusBtn').textContent='✅';
   } else {
     bs.classList.remove('claimed');
-    $('bonusText').textContent='🎁 Điểm danh nhận 200,000 xu!';
+    $('bonusText').textContent='🎁 Điểm danh nhận 400,000 xu!';
     $('bonusSub').textContent='Mỗi ngày một lần';
     $('bonusBtn').textContent='NHẬN';
   }
@@ -1255,8 +1894,8 @@ function updateHome(){
 function claimDaily(){
   let today=new Date().toDateString();
   if(S.lastBonus===today){toast('Hôm nay đã điểm danh rồi!','info');return}
-  S.bal+=200000;S.lastBonus=today;save();
-  updateHome();toast('🎁 Nhận 200,000 xu!','success');
+  S.bal+=400000;S.lastBonus=today;save();
+  updateHome();toast('🎁 Nhận 400,000 xu!','success');
   spawnConfetti();vibrate(20);
 }
 
@@ -1266,7 +1905,7 @@ function renderHomeTickets(){
   if(tix.length===0){el.innerHTML='<div class="text-muted text-center" style="padding:20px;font-size:13px">Chưa có vé nào. Hãy chọn game để bắt đầu!</div>';return}
   el.innerHTML=tix.map(t=>{
     let st=t.status;let stCls=st;let stTxt=st==='pending'?'⏳':st==='won'?'🎉':'❌';
-    let nums=t.numbers.slice(0,3).map(n=>(n<10?'0'+n:n)).join(', ');
+    let nums=isDigitGame(t.game)?t.numbers.slice(0,3).join(' - '):t.numbers.slice(0,3).map(n=>(n<10?'0'+n:n)).join(', ');
     return '<div class="ticket-item"><div><div class="ti-game">'+t.gameName+(t.bao>0?' (Bao '+t.bao+')':'')+
       '</div><div class="ti-nums">'+nums+(t.numbers.length>3?'...':'')+' · '+t.totalCombos+' bộ</div></div>'+
       '<div style="text-align:right"><div class="ti-status '+stCls+'">'+stTxt+' '+st.toUpperCase()+'</div>'+
@@ -1284,7 +1923,7 @@ function renderHist(){
   if(tix.length===0){el.innerHTML='<div class="text-muted text-center" style="padding:30px">Không có vé nào</div>';return}
   el.innerHTML=tix.map(t=>{
     let st=t.status;let stCls=st;let stTxt=st==='pending'?'⏳ Chờ':st==='won'?'🎉 Trúng':'❌ Trượt';
-    let nums=t.numbers.slice(0,6).map(n=>(n<10?'0'+n:n)).join(', ');
+    let nums=isDigitGame(t.game)?t.numbers.slice(0,6).join(' - '):t.numbers.slice(0,6).map(n=>(n<10?'0'+n:n)).join(', ');
     let time=new Date(t.time).toLocaleString('vi-VN');
     return '<div class="ticket-item" onclick="showTicketDetail(\''+t.id+'\')" style="cursor:pointer"><div><div class="ti-game">🎫 '+t.gameName+(t.bao>0?' (Bao '+t.bao+')':'')+
       '</div><div class="ti-nums">'+nums+(t.numbers.length>6?'...':'')+' · '+t.totalCombos+' bộ</div>'+
@@ -1300,6 +1939,7 @@ function showTicketDetail(tId){
   let t=S.tickets.find(x=>x.id===tId);
   if(!t){toast('Không tìm thấy vé!','error');return}
   if(t.status==='pending'){toast('Vé chưa có kết quả!','info');return}
+  if(isDigitGame(t.game)){showDigitTicketDetail(t);return}
 
   let g=t.game==='keno'?GAMES.keno:(t.game==='mega'?GAMES.mega:(t.game==='power'?GAMES.power:GAMES.lotto));
   let overlay=$('ticketDetailOverlay');
@@ -1388,6 +2028,58 @@ function showTicketDetail(tId){
   body.innerHTML=h;
 }
 
+// Digit-family ticket detail: shows the grouped draw + which tiers this ticket hit.
+// Uses the same .td-section / .td-info-row / .td-total-prize classes as the ball-game view.
+function showDigitTicketDetail(t){
+  let g=GAMES[t.game];
+  let overlay=$('ticketDetailOverlay');
+  overlay.classList.add('active');
+  $('tdTitle').textContent='🎫 '+t.gameName+(t.bao>0?' (Bao '+t.bao+')':'');
+  $('tdGame').textContent=new Date(t.time).toLocaleString('vi-VN')+' · '+t.totalCombos+' bộ số';
+
+  let body=$('tdBody');
+  let h='';
+  let dg=t.drawGroups;
+  if(dg){
+    h+='<div class="td-draw-title">🎯 Kết quả quay thưởng</div>';
+    g.groups.forEach(gr=>{
+      h+='<div class="draw-group-title">'+gr.label+'</div><div class="db3-row" style="margin-bottom:8px">';
+      dg[gr.key].forEach(n=>{h+='<div class="db3" style="padding:4px 9px;font-size:11px">'+n+'</div>'});
+      h+='</div>';
+    });
+  }
+
+  h+='<div class="td-section-title">📝 Số bạn chọn</div><div class="td-section">';
+  if(t.game==='max3d'){
+    h+='<div class="td-info-row"><span class="label">Số của bạn:</span><span class="value">'+t.numbers[0]+' ('+(t.digitMode==='combo'?'Tổ hợp':'Bộ số')+')</span></div>';
+  } else if(t.bao>0){
+    h+='<div class="td-info-row"><span class="label">Danh sách Bao ('+t.numbers.length+' số):</span><span class="value">'+t.numbers.join(', ')+'</span></div>';
+  } else {
+    h+='<div class="td-info-row"><span class="label">Số đầu:</span><span class="value">'+t.numbers[0]+'</span></div>';
+    h+='<div class="td-info-row"><span class="label">Số sau:</span><span class="value">'+t.numbers[1]+'</span></div>';
+  }
+  h+='</div>';
+
+  h+='<div class="td-section-title">🏆 Hạng giải trúng</div>';
+  let anyHit=false;
+  (t.results||[]).forEach(r=>{
+    (r.hits||[]).forEach(hit=>{
+      anyHit=true;
+      let amt=hit.a*(r.doubled?2:1);
+      h+='<div class="tier-row"><span class="tr-name">'+hit.n+(r.doubled?' (×2, 2 số trùng nhau)':'')+'</span><span class="tr-amt">+'+fmt(amt)+'</span></div>';
+    });
+  });
+  if(!anyHit)h+='<div class="td-empty">Không trúng hạng giải nào</div>';
+
+  if(t.prize>0){
+    h+='<div class="td-total-prize"><span class="ttp-label">💰 Tổng thưởng</span><span class="ttp-amount">+'+fmt(t.prize)+'</span></div>';
+  } else {
+    h+='<div class="td-total-prize" style="border-color:rgba(255,53,85,.2);background:rgba(255,53,85,.05)"><span class="ttp-label">😢 Kết quả</span><span class="ttp-amount" style="color:var(--text2)">Không trúng</span></div>';
+  }
+
+  body.innerHTML=h;
+}
+
 function closeTicketDetail(){
   $('ticketDetailOverlay').classList.remove('active');
 }
@@ -1400,13 +2092,30 @@ function toast(msg,type='info'){
   setTimeout(()=>{el.style.opacity='0';el.style.transition='opacity .3s';setTimeout(()=>el.remove(),300)},2500);
 }
 
+// ===================== CUSTOM CONFIRM (replaces native confirm()) =====================
+// Native confirm()/alert()/prompt() are commonly blocked or silently no-op inside sandboxed
+// iframe previews and some mobile webviews — the calling code sees no error, it just never
+// gets a "yes", so the action quietly does nothing. This works in every environment.
+let __confirmCb=null;
+function showConfirm(msg,onYes){
+  $('confirmMsg').textContent=msg;
+  __confirmCb=onYes;
+  $('confirmOverlay').classList.add('active');
+}
+function closeConfirm(ok){
+  $('confirmOverlay').classList.remove('active');
+  let cb=__confirmCb;__confirmCb=null;
+  if(ok&&cb)cb();
+}
+
 // ===================== RESET =====================
 function resetGame(){
-  if(!confirm('Reset toàn bộ dữ liệu?'))return;
-  localStorage.removeItem('lotoData');
-  S.bal=1000000;S.tickets=[];S.lastBonus='';
-  S.jackpots={mega:12000000000,power:30000000000,power2:3000000000,lotto:6000000000};
-  updateHome();toast('🔄 Đã reset! Nhận 1,000,000 xu','info');
+  showConfirm('Reset toàn bộ dữ liệu? Xu và vé hiện tại sẽ mất hết.',()=>{
+    localStorage.removeItem('lotoData');
+    S.bal=1000000;S.tickets=[];S.lastBonus='';
+    S.jackpots={mega:12000000000,power:30000000000,power2:3000000000,lotto:6000000000};
+    updateHome();toast('🔄 Đã reset! Nhận 1,000,000 xu','info');
+  });
 }
 
 // ===================== INIT =====================
